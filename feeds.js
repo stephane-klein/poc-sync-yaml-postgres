@@ -16,44 +16,51 @@ const pool = new Pool({
 
 try {
     const data = yaml.load(fs.readFileSync('./feeds.yaml', 'utf8'));
-    data.feeds.forEach(async(item) => {
+
+    const db_version_datetime = (await pool.query(`SELECT version_datetime FROM sync_yaml_state.resource_states WHERE resource_name='feeds'`)).rows?.[0]?.version_datetime;
+
+    if (db_version_datetime <= data.version) {
+        data.feeds.forEach(async(item) => {
+            await pool.query(
+                `
+                    INSERT INTO main.feeds
+                    (
+                        slug,
+                        name
+                    )
+                    VALUES(
+                        $1,
+                        $2
+                    ) ON CONFLICT (slug) DO UPDATE
+                        SET name=$2;
+                `,
+                [
+                    item.slug,
+                    item.name
+                ]
+            );
+        });
         await pool.query(
             `
-                INSERT INTO main.feeds
-                (
-                    slug,
-                    name
-                )
-                VALUES(
-                    $1,
-                    $2
-                ) ON CONFLICT (slug) DO UPDATE
-                    SET name=$2;
+            INSERT INTO sync_yaml_state.resource_states
+            (
+                resource_name,
+                version_datetime
+            )
+            VALUES(
+                'feeds',
+                $1
+            )
+            ON CONFLICT (resource_name) DO UPDATE
+                SET version_datetime=$1
             `,
             [
-                item.slug,
-                item.name
+                data.version
             ]
         );
-    });
-    await pool.query(
-        `
-        INSERT INTO sync_yaml_state.resource_states
-        (
-            resource_name,
-            version_datetime
-        )
-        VALUES(
-            'feeds',
-            $1
-        )
-        ON CONFLICT (resource_name) DO UPDATE
-            SET version_datetime=$1
-        `,
-        [
-            data.version
-        ]
-    );
+    } else {
+        console.log(`The "feeds" table contains changes made after ${data.version} therefore, the synchronization has not been executed`);
+    }
 
     // console.log(util.inspect(data, {showHidden: false, depth: null, colors: true}))
 } catch (e) {
