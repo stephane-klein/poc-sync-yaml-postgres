@@ -4,6 +4,7 @@ import yaml from 'js-yaml';
 import util from 'util';
 import pkg from "pg";
 const { Pool } = pkg;
+process.env.TZ = "UTC+0";
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER || "postgres",
@@ -35,8 +36,26 @@ try {
             ]
         );
     });
+    await pool.query(
+        `
+        INSERT INTO sync_yaml_state.resource_states
+        (
+            resource_name,
+            version_datetime
+        )
+        VALUES(
+            'feeds',
+            $1
+        )
+        ON CONFLICT (resource_name) DO UPDATE
+            SET version_datetime=$1
+        `,
+        [
+            data.version
+        ]
+    );
 
-    console.log(util.inspect(data, {showHidden: false, depth: null, colors: true}))
+    // console.log(util.inspect(data, {showHidden: false, depth: null, colors: true}))
 } catch (e) {
     console.log(e);
 }
