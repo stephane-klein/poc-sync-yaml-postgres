@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+      PGOPTIONS: "--search_path=''"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./sqls/:/sqls/
+      - ./volumes/postgres/:/var/lib/postgresql/
+    healthcheck:
+      test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
+      interval: 10s
+      start_period: 30s
+

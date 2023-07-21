@@ -1,0 +1,13 @@
+{
+  "name": "poc-sync-yaml-postgres",
+  "type": "module",
+  "scripts": {
+    "prettier": "prettier -w feeds.yaml",
+    "prettier-check": "prettier --check feeds.yaml"
+  },
+  "dependencies": {
+    "js-yaml": "4.1.0",
+    "pg": "8.11.1",
+    "prettier": "3.0.0"
+  }
+}
