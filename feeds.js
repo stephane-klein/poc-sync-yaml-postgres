@@ -19,7 +19,11 @@ try {
 
     const db_version_datetime = (await pool.query(`SELECT version_datetime FROM sync_yaml_state.resource_states WHERE resource_name='feeds'`)).rows?.[0]?.version_datetime;
 
-    if (db_version_datetime <= data.version) {
+    if (
+        (db_version_datetime === undefined) ||
+        (db_version_datetime <= data.version)
+    ) {
+        await pool.query('ALTER TABLE main.feeds DISABLE TRIGGER on_feeds_update_version_datetime;');
         data.feeds.forEach(async(item) => {
             await pool.query(
                 `
@@ -58,6 +62,7 @@ try {
                 data.version
             ]
         );
+        await pool.query('ALTER TABLE main.feeds ENABLE TRIGGER on_feeds_update_version_datetime;');
     } else {
         console.log(`The "feeds" table contains changes made after ${data.version} therefore, the synchronization has not been executed`);
     }
