@@ -13,7 +13,7 @@ $ docker compose up -d --wait
 ```
 
 ```
-$ ./feeds.js
+$ ./feeds-to-db.js
 $ ./scripts/pgcli.sh
 postgres@127:postgres> select * from main.feeds;
 +-------------+-------------+
