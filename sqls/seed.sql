@@ -134,8 +134,6 @@ CREATE TRIGGER on_feed_tags_updated_then_compute_feed_tags_cache
 
 \echo "... on_feed_tags_updated_then_compute_feed_tags_cache created"
 
--- Triggers to auto update sync_yaml_state.resource_states.version_datetime
-
 \echo "on_feed_tags_inserted_then_compute_feed_tags_cache trigger creating..."
 
 DROP TRIGGER IF EXISTS on_feed_tags_inserted_then_compute_feed_tags_cache ON main.feeds;
@@ -156,6 +154,28 @@ CREATE TRIGGER on_feed_tags_inserted_then_compute_feed_tags_cache
     EXECUTE PROCEDURE main.on_feed_tags_inserted_then_compute_feed_tags_cache();
 
 \echo "... on_feed_tags_inserted_then_compute_feed_tags_cache created"
+
+\echo "on_feed_tags_deleted_then_compute_feed_tags_cache trigger creating..."
+
+DROP TRIGGER IF EXISTS on_feed_tags_deleted_then_compute_feed_tags_cache ON main.feeds;
+DROP FUNCTION IF EXISTS main.on_feed_tags_deleted_then_compute_feed_tags_cache();
+
+CREATE FUNCTION main.on_feed_tags_deleted_then_compute_feed_tags_cache() RETURNS TRIGGER AS $$
+BEGIN
+    PERFORM main.compute_feed_tags_cache(OLD.tags);
+    RETURN NULL;
+END;
+$$ LANGUAGE PLPGSQL SECURITY DEFINER;
+
+CREATE TRIGGER on_feed_tags_deleted_then_compute_feed_tags_cache
+    AFTER DELETE
+    ON main.feeds
+    FOR EACH ROW
+    EXECUTE PROCEDURE main.on_feed_tags_deleted_then_compute_feed_tags_cache();
+
+\echo "... on_feed_tags_deleted_then_compute_feed_tags_cache created"
+
+-- Triggers to auto update sync_yaml_state.resource_states.version_datetime
 
 DROP TRIGGER IF EXISTS on_feeds_update_version_datetime ON main.feeds;
 DROP FUNCTION IF EXISTS main.on_feeds_update_version_datetime();
