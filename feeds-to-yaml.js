@@ -18,7 +18,11 @@ const db_version_datetime = (await pool.query(`SELECT version_datetime FROM sync
 const result = (await pool.query(`
     SELECT
         slug,
-        name
+        name,
+        youtube_url,
+        description,
+        author_name,
+        author_wikipedia_fr_url
     FROM
         main.feeds
     ORDER BY
@@ -38,6 +42,12 @@ feeds:
   {% for item in result %}
   - slug: {{ item.slug }}
     name: {{ item.name }}
+    youtube_url: {{ item.youtube_url }}
+    author:
+      name: {{ item.author_name }}
+      wikipedia_fr_url: {{ item.author_wikipedia_fr_url }}
+    description: |
+      {{ item.description | indent(6) }}
   {% endfor -%}
     `,
     {

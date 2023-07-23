@@ -20,9 +20,13 @@ CREATE TABLE sync_yaml_state.resource_states (
 CREATE INDEX resource_states_resurce_name_index ON sync_yaml_state.resource_states (resource_name);
 
 CREATE TABLE main.feeds (
-    slug          VARCHAR(100) PRIMARY KEY,
-    yaml_position INTEGER DEFAULT 0,
-    name          VARCHAR(100) NOT NULL
+    slug                    VARCHAR(100) PRIMARY KEY,
+    yaml_position           INTEGER DEFAULT 0,
+    name                    VARCHAR(100) NOT NULL,
+    youtube_url             VARCHAR(2000) DEFAULT NULL,
+    description             TEXT DEFAULT NULL,
+    author_name             VARCHAR(200) DEFAULT NULL,
+    author_wikipedia_fr_url VARCHAR(2000) DEFAULT NULL
 );
 CREATE INDEX feeds_name_index ON main.feeds (name);
 CREATE INDEX feeds_yaml_position_index ON main.feeds (yaml_position);

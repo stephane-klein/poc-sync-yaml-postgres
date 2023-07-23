@@ -31,21 +31,37 @@ try {
                     (
                         slug,
                         name,
-                        yaml_position
+                        yaml_position,
+                        youtube_url,
+                        description,
+                        author_name,
+                        author_wikipedia_fr_url
                     )
                     VALUES(
                         $1,
                         $2,
-                        $3
+                        $3,
+                        $4,
+                        $5,
+                        $6,
+                        $7
                     ) ON CONFLICT (slug) DO UPDATE
                         SET
                             name=$2,
-                            yaml_position=$3;
+                            yaml_position=$3,
+                            youtube_url=$4,
+                            description=$5,
+                            author_name=$6,
+                            author_wikipedia_fr_url=$7;
                 `,
                 [
                     item.slug,
                     item.name,
-                    index
+                    index,
+                    item.youtube_url,
+                    item.description,
+                    item?.author?.name,
+                    item?.author?.wikipedia_fr_url
                 ]
             );
         });
