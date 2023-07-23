@@ -27,6 +27,10 @@ try {
         data.feeds.forEach(async(item, index) => {
             await pool.query(
                 `
+                    WITH tags AS (
+                        SELECT
+                            main.get_and_maybe_insert_feed_tags($8) AS tags
+                    )
                     INSERT INTO main.feeds
                     (
                         slug,
@@ -35,7 +39,8 @@ try {
                         youtube_url,
                         description,
                         author_name,
-                        author_wikipedia_fr_url
+                        author_wikipedia_fr_url,
+                        tags
                     )
                     VALUES(
                         $1,
@@ -44,7 +49,8 @@ try {
                         $4,
                         $5,
                         $6,
-                        $7
+                        $7,
+                        (SELECT tags FROM tags)
                     ) ON CONFLICT (slug) DO UPDATE
                         SET
                             name=$2,
@@ -52,7 +58,8 @@ try {
                             youtube_url=$4,
                             description=$5,
                             author_name=$6,
-                            author_wikipedia_fr_url=$7;
+                            author_wikipedia_fr_url=$7,
+                            tags=(SELECT tags FROM tags);
                 `,
                 [
                     item.slug,
@@ -61,7 +68,8 @@ try {
                     item.youtube_url,
                     item.description,
                     item?.author?.name,
-                    item?.author?.wikipedia_fr_url
+                    item?.author?.wikipedia_fr_url,
+                    [item.tags]
                 ]
             );
         });
