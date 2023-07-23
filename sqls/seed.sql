@@ -74,6 +74,31 @@ CREATE FUNCTION main.get_and_maybe_insert_feed_tags(
         feed_tags.name = tag_name;
 $$ LANGUAGE SQL;
 
+CREATE VIEW main.feeds_with_tag_names AS
+    WITH exploded AS (
+         SELECT
+             feeds.slug,
+             tag_id
+         FROM
+             main.feeds
+         CROSS JOIN UNNEST(feeds.tags) AS tag_id
+     )
+     SELECT
+         feeds.*,
+         ARRAY_AGG(main.feed_tags.name) AS tag_names
+     FROM
+         main.feeds
+     LEFT JOIN
+         exploded
+     ON
+         feeds.slug = exploded.slug
+     LEFT JOIN
+         main.feed_tags
+     ON
+         exploded.tag_id = feed_tags.id
+     GROUP BY
+         feeds.slug;
+
 -- main.feed_tags triggers
 
 DROP FUNCTION IF EXISTS main.compute_feed_tags_cache;
