@@ -22,9 +22,10 @@ const result = (await pool.query(`
         youtube_url,
         description,
         author_name,
-        author_wikipedia_fr_url
+        author_wikipedia_fr_url,
+        tag_names
     FROM
-        main.feeds
+        main.feeds_with_tag_names
     ORDER BY
         yaml_position
 `)).rows;
@@ -35,6 +36,7 @@ nunjucks.configure({
     trimBlocks: true,
     lstripBlocks: true
 });
+
 console.log(nunjucks.renderString(
     `
 version: {{ version }}
@@ -46,6 +48,7 @@ feeds:
     author:
       name: {{ item.author_name }}
       wikipedia_fr_url: {{ item.author_wikipedia_fr_url }}
+    tags: [{{ item.tag_names | join(", ") }}]
     description: |
       {{ item.description | indent(6) }}
   {% endfor -%}
