@@ -6,7 +6,7 @@ feeds:
     author:
       name: Gilles Mitteau
       wikipedia_fr_url: https://fr.wikipedia.org/wiki/Gilles_Mitteau
-    tags: Économie, Finances
+    tags: [Économie, Finances]
     description: |
       Vous ne comprenez rien à la finance et à l'économie ? Vous êtes au bon endroit !
 
@@ -27,7 +27,7 @@ feeds:
     author:
       name: Lê Nguyên Hoang
       wikipedia_fr_url: https://fr.wikipedia.org/wiki/L%C3%AA_Nguy%C3%AAn_Hoang
-    tags: Mathématique, Informatique, Physique, Bayésianisme, Intelligence artificielle
+    tags: [Mathématique, Informatique, Physique, Bayésianisme, Intelligence artificielle]
     description: |
       Hello ! Je m'appelle Lê Nguyên Hoang (appelez-moi Lê).  
       Je suis chercheur et médiateur scientifique à l'EPFL, avec qui je tiens les chaînes Étincelles, Wandida et ZettaBytes.  
