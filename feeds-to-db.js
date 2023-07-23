@@ -24,23 +24,28 @@ try {
         (db_version_datetime <= data.version)
     ) {
         await pool.query('ALTER TABLE main.feeds DISABLE TRIGGER on_feeds_update_version_datetime;');
-        data.feeds.forEach(async(item) => {
+        data.feeds.forEach(async(item, index) => {
             await pool.query(
                 `
                     INSERT INTO main.feeds
                     (
                         slug,
-                        name
+                        name,
+                        yaml_position
                     )
                     VALUES(
                         $1,
-                        $2
+                        $2,
+                        $3
                     ) ON CONFLICT (slug) DO UPDATE
-                        SET name=$2;
+                        SET
+                            name=$2,
+                            yaml_position=$3;
                 `,
                 [
                     item.slug,
-                    item.name
+                    item.name,
+                    index
                 ]
             );
         });

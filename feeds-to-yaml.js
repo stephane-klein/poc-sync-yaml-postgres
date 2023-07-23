@@ -1,9 +1,6 @@
 #!/usr/bin/env node
-// import fs from 'fs';
-// import yaml from 'js-yaml';
 import { format } from 'date-fns'
 import nunjucks from 'nunjucks';
-import util from 'util';
 import pkg from "pg";
 const { Pool } = pkg;
 process.env.TZ = "UTC+0";
@@ -25,7 +22,7 @@ const result = (await pool.query(`
     FROM
         main.feeds
     ORDER BY
-        slug
+        yaml_position
 `)).rows;
 // console.log(util.inspect(result, {showHidden: false, depth: null, colors: true}))
 

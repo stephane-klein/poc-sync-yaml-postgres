@@ -20,10 +20,12 @@ CREATE TABLE sync_yaml_state.resource_states (
 CREATE INDEX resource_states_resurce_name_index ON sync_yaml_state.resource_states (resource_name);
 
 CREATE TABLE main.feeds (
-    slug  VARCHAR(100) PRIMARY KEY,
-    name  VARCHAR(100) NOT NULL
+    slug          VARCHAR(100) PRIMARY KEY,
+    yaml_position INTEGER DEFAULT 0,
+    name          VARCHAR(100) NOT NULL
 );
 CREATE INDEX feeds_name_index ON main.feeds (name);
+CREATE INDEX feeds_yaml_position_index ON main.feeds (yaml_position);
 
 DROP TRIGGER IF EXISTS on_feeds_update_version_datetime ON main.feeds;
 DROP FUNCTION IF EXISTS main.on_feeds_update_version_datetime();
