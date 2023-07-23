@@ -26,6 +26,52 @@ SELECT 2
 Time: 0.005s
 ```
 
+```sh
+$ ./feeds-to-yaml.js
+version: 2023-00-21 12:07:00
+feeds:
+  - slug: heu7reka
+    name: Heu?reka
+    youtube_url: https://www.youtube.com/@Heu7reka/videos
+    author:
+      name: Gilles Mitteau
+      wikipedia_fr_url: https://fr.wikipedia.org/wiki/Gilles_Mitteau
+    tags: [Économie, Finances]
+    description: |
+      Vous ne comprenez rien à la finance et à l'économie ? Vous êtes au bon endroit !
+
+      Les épisodes sont écrits comme des dialogues entre deux personnages afin de permettre une meilleure compréhension.
+      J'utilise beaucoup de schémas, de graphiques et d'animations pour rendre les explications plus intelligibles.
+
+      3 types de formats sur la chaîne :
+
+      * Les épisodes normaux qui traitent de sujets financiers et économiques (vignette en noir et blanc)
+      * Les "Wall Street Stories" qui racontent des histoires vraies liées au monde de la finance (vignette en noir et blanc + plaque "Wall Street" en haut à gauche)
+      * Les "Partenariats" qui sont des vidéos financées par des entreprises sur des sujets imposés (vignette avec ma tête dessus)
+
+      Mon activité est principalement financée grâce à vos dons sur Tipeee (voir le lien "faire un don" ci-dessous)
+
+  - slug: science4all
+    name: Science4All
+    youtube_url: https://www.youtube.com/@Science4Allfrancais/videos
+    author:
+      name: Lê Nguyên Hoang
+      wikipedia_fr_url: https://fr.wikipedia.org/wiki/L%C3%AA_Nguy%C3%AAn_Hoang
+    tags: [Mathématique, Informatique, Physique, Bayésianisme, Intelligence artificielle]
+    description: |
+      Hello ! Je m'appelle Lê Nguyên Hoang (appelez-moi Lê).
+      Je suis chercheur et médiateur scientifique à l'EPFL, avec qui je tiens les chaînes Étincelles, Wandida et ZettaBytes.
+      Depuis juillet 2017, je tiens le Podcast Axiome avec Monsieur Phi.
+      Depuis janvier 2019, je tiens le Robustly Beneficial Podcast avec Louis Faucon et El Mahdi El Mhamdi.
+
+      Mes livres :
+
+      - [La formule du savoir](https://laboutique.edpsciences.fr/produit/1035/9782759822614/La%20formule%20du%20savoir)
+      - [Le fabuleux chantier, avec El Mahdi El Mhamdi](https://laboutique.edpsciences.fr/produit/1107/9782759824304/Le%20fabuleux%20chantier)
+      - [Turing à la plage, avec Rachid Guerraoui](https://www.dunod.com/sciences-techniques/turing-plage-intelligence-artificielle-dans-un-transat)
+      - [SmartPoop (mon 4e livre, avec Tristan Le Magoarou, aka Risque Alpha)](https://bit.ly/smartpoop-fr)
+```
+
 ## Reminder
 
 ```sh
